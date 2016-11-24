@@ -1,0 +1,4 @@
+BOARD = 0
+APPLE = 1
+ROCK  = 2
+SNAKE = 3
