@@ -1,4 +1,5 @@
 import copy
+import random
 from Node import Node
 
 
@@ -9,6 +10,7 @@ class AI:
         self.opponent = opponent
         self.stack = []
         self.max_depth = max_depth
+        self.pred = None
 
     def branch(self, node):
         # Set the correct player pice by checking tree depth
@@ -31,7 +33,7 @@ class AI:
                 # Score the node based on win / loss / draw
                 score = self.calc_heuristics()
             elif node.depth == self.max_depth:
-                score = self.game.max_score
+                score = sum(self.game.max_score)
             else:
                 score = None
 
@@ -62,7 +64,7 @@ class AI:
 
         # TODO: Implement a score '3' if
         #       AI wins and have a possible
-        #		win another place. (X X X -)
+        #       win another place. (X X X -)
 
     def update_alpha_beta(self, score, type_):
         if type_ == 'max' and score < self.stack[-1].beta:

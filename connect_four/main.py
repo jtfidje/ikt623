@@ -65,22 +65,22 @@ def pvp():
     print_ending(game)
 
 
-def pve():
+def pve(turn=0):
     ai = AI(PLAYER_1, PLAYER_2)
     i = 0
     game.__init__()
-
+    print_game(game)
     while not game.check_winner():
         i += 1
 
-        if i % 2:
+        if i % 2 == turn:
             # TODO: Get AI turn
             # player = PLAYER_1
             # move =
             move = ai.search(game)
-            player = PLAYER_1
             game.put_piece(move, PLAYER_1)
-
+            print_game(game)
+            print('\n',ai.pred)
         else:
             # Make player move
             while True:
@@ -93,9 +93,7 @@ def pve():
 
                 if game.put_piece(move, PLAYER_2):
                     break
-
-        print_game(game)
-        print(ai.pred)
+            print_game(game)
 
     print_ending(game)
 
@@ -108,27 +106,27 @@ def ave():
     while not game.check_winner():
         i += 1
 
-        if i % 2:
+        if i % 2 == 0:
             # TODO: Get AI turn
             # player = PLAYER_1
             # move =
             move = ai.search(game)
-            player = PLAYER_1
             game.put_piece(move, PLAYER_1)
 
         else:
             while not game.put_piece(random.randrange(0, COLS), PLAYER_2):
                 pass
 
-        print_game(game)
-        print(ai.pred)
+        #print_game(game)
+        #print(ai.pred)
 
-    print_ending(game)
+    return game.winner
+    #print_ending(game)
 
 
 def ava():
-    ai_1 = AI(PLAYER_1, PLAYER_2, max_depth=5)
-    ai_2 = AI(PLAYER_2, PLAYER_1, max_depth=2)
+    ai_1 = AI(PLAYER_1, PLAYER_2, max_depth=6)
+    ai_2 = AI(PLAYER_2, PLAYER_1, max_depth=4)
     i = 0
     game.__init__()
 
@@ -151,7 +149,19 @@ def ava():
 
 
 if __name__ == '__main__':
-#	ave()
-#	pvp()
-    pve()
-#	ava()
+#   pvp()
+#   pve()
+#   ava()
+    results = [0, 0, 0]
+    for i in range(1000):
+        if i % 10 == 0:
+            print(i)
+        winner = ave()
+        if winner == PLAYER_1:
+            results[0] += 1
+        elif winner == "Draw":
+            results[1] += 1
+        elif winner == PLAYER_2:
+            results[2] += 1
+
+

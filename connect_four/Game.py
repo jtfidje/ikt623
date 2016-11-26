@@ -1,3 +1,5 @@
+import math
+
 COLS = 7
 ROWS = 6
 
@@ -12,10 +14,13 @@ class Game:
         self.create_board()
 
         self.score_table = {
-            (BOARD, BOARD, BOARD, PLAYER_1): 1/4,
-            (BOARD, BOARD, PLAYER_1, PLAYER_1): 2/4,
-            (BOARD, PLAYER_1, PLAYER_1, PLAYER_1): 3/4,
-        }
+            (BOARD, BOARD, BOARD, PLAYER_1): 		1/4,
+            (BOARD, BOARD, PLAYER_1, PLAYER_1): 	2/4,
+            (BOARD, PLAYER_1, PLAYER_1, PLAYER_1): 	3/4,
+            #(BOARD, BOARD, BOARD, PLAYER_2): 		-(1/8),
+            #(BOARD, BOARD, PLAYER_2, PLAYER_2): 	-(3/8),
+            #(BOARD, PLAYER_2, PLAYER_2, PLAYER_2): 	-(5/8),
+        } 
 
     def create_board(self):
         self.board = [[BOARD for _ in range(ROWS)] for _ in range(COLS)]
@@ -29,7 +34,7 @@ class Game:
             return False
 
     def check_winner(self, board=None):
-        self.max_score = 0
+        self.max_score = [0, 0]
 
         if not board:
             board = self.board
@@ -74,10 +79,13 @@ class Game:
         if all(i == mark for i in window):
             self.winner = mark
             return True
+
         window.sort()
         i = self.score_table.get(tuple(window), 0)
-        if i > self.max_score:
-            self.max_score = i
+        if i > self.max_score[0]:
+            self.max_score[0] = i
+        elif i < self.max_score[1]:
+        	self.max_score[1] = i
 
         return False
 
