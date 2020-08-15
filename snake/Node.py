@@ -1,8 +1,4 @@
-import Config as cfg
-
-
-BOARD = cfg.BOARD
-APPLE = cfg.APPLE
+from Game import BOARD, APPLE
 
 class Node:
 	def __init__(self, board, snake, parent=None, move=None):

@@ -3,38 +3,43 @@ import time
 
 from Game import Game
 from Search import Search
+import Config as cfg
 
-SNAKE_LEN = 10
-BOARD_SIZE = 20
-WAIT = 0.1
-
-game = Game(BOARD_SIZE, SNAKE_LEN)
+game = Game(cfg.BOARD_SIZE, cfg.SNAKE_LEN)
 search = Search(game)
 
 times = []
 
-for i in range(10000):
-	start = time.time()
-#	moves = search.depth_first()
-#	moves = search.breadth_first()
-	moves = search.a_star()
-	stop = time.time()
+try:
+	i = 1
+	while True:
+		start = time.time()
+	#	moves = search.depth_first()
+	#	moves = search.breadth_first()
+		moves = search.a_star()
+		stop = time.time()
 
-	delta = stop - start
-	times.append(delta)
-	print(game)
-	while moves:
-		move = moves.pop()
-		os.system('clear')
-		game.move_snake(move)
-		print('  Score:', i)
-		print('  Nodes:', len(search.visited_states))
-		print('  Time :', delta)
+		delta = stop - start
+		times.append(delta)
 		print(game)
-		time.sleep(WAIT)
-	
-	game.spawn_apple()
-	# Reset global search variables
-	search.__init__(game)
-
-print(sum(times) / len(times))
+		while moves:
+			move = moves.pop()
+			os.system('clear')
+			game.move_snake(move)
+			print(f'  Score: {i}')
+			print(f'  Nodes: {len(search.visited_states)}')
+			print(f'  Time : {delta:0.4f}')
+			print(game)
+			time.sleep(cfg.WAIT)
+		
+		game.spawn_apple()
+		
+		if cfg.ROCK_MODE == 'dynamic':
+			game.spawn_rock()
+		
+		# Reset global search variables
+		search.__init__(game)
+		i += 1
+except KeyboardInterrupt:
+	avg = sum(times) / len(times)
+	print(f'\n\nAverage search time: {avg}\n\n')
